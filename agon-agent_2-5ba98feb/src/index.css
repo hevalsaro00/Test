@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-flip: "Anton", sans-serif;
+  --font-ui: "Archivo", sans-serif;
+}
+
+:root {
+  /* الحجم الأساسي لبطاقة الفليب — عمودي: جنب بعض */
+  --flip-base: min(44vw, 62vh, 660px);
+}
+
+
+
+html, body, #root {
+  height: 100%;
+  background: #000;
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* دائرة لون مخصص أنيقة */
+input[type='color'] {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 9999px;
+}
+input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type='color']::-webkit-color-swatch {
+  border: none;
+  border-radius: 9999px;
+}
+input[type='color']::-moz-color-swatch {
+  border: none;
+  border-radius: 9999px;
+}
+
+.rainbow-text {
+  background: linear-gradient(120deg, #ff3b30, #ff9500, #34c759, #30d0a8, #0a84ff, #8a2be2, #ff2d92, #ff3b30);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow-shift 6s linear infinite;
+}
+
+@keyframes rainbow-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Flip clock */
+.flip-card {
+  position: relative;
+  border-radius: clamp(16px, 3vw, 36px);
+  background: #1c1c1e;
+  perspective: 1200px;
+  transition: width 0.35s ease, height 0.35s ease;
+}
+
+.flip-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-half.top {
+  top: 0;
+  border-radius: clamp(16px, 3vw, 36px) clamp(16px, 3vw, 36px) 0 0;
+  background: #1c1c1e;
+}
+
+.flip-half.bottom {
+  bottom: 0;
+  border-radius: 0 0 clamp(16px, 3vw, 36px) clamp(16px, 3vw, 36px);
+  background: #1a1a1c;
+}
+
+/* Full-card-height inner box — digit is centered on the card midline,
+   each half crops its own portion */
+.flip-inner {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--flip-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flip-inner.inner-top {
+  top: 0;
+}
+
+.flip-inner.inner-bottom {
+  bottom: 0;
+}
+
+.flip-digits {
+  font-family: var(--font-flip);
+  line-height: 1;
+  letter-spacing: 0.07em;
+  margin-right: -0.07em; /* compensate trailing space to keep centered */
+  user-select: none;
+}
+
+.flap {
+  z-index: 10;
+  transform-style: preserve-3d;
+}
+
+.flap.flap-top {
+  transform-origin: bottom center;
+  animation: flip-down 0.3s cubic-bezier(0.37, 0.01, 0.94, 0.35) forwards;
+}
+
+.flap.flap-bottom {
+  transform-origin: top center;
+  transform: rotateX(90deg);
+  animation: flip-up 0.3s 0.3s cubic-bezier(0.15, 0.45, 0.28, 1) forwards;
+}
+
+@keyframes flip-down {
+  from { transform: rotateX(0deg); }
+  to { transform: rotateX(-90deg); }
+}
+
+@keyframes flip-up {
+  from { transform: rotateX(90deg); }
+  to { transform: rotateX(0deg); }
+}
+
+.flip-divider {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  background: #000;
+  z-index: 20;
+}
